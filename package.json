@@ -1,0 +1,103 @@
+{
+    "name": "gmelius",
+    "label": "Gmelius Package",
+    "dependencies": [
+        {
+            "type": "service",
+            "name": "http",
+            "version": "v1.2.6",
+            "instanceId": "shared"
+        }
+    ],
+    "configuration": [
+        {
+            "name": "redirectUri",
+            "label": "Redirect URI",
+            "description": "Redirect URI to register on your application",
+            "type": "label",
+            "value": "config.SERVER_URL+ '/runtime/callback'"
+        },
+        {
+            "name": "clientId",
+            "label": "Client ID",
+            "type": "text",
+            "required": true
+        },
+        {
+            "name": "clientSecret",
+            "label": "Client Secret",
+            "type": "text",
+            "required": true
+        },
+        {
+            "name": "requestToken",
+            "label": "Request token",
+            "type": "oauth2",
+            "visibility": true,
+            "typeOptions": {
+                "clientId": "config.clientId",
+                "clientSecret": "config.clientSecret",
+                "authUrl": "'https://gmelius.io/oauth/authorize'",
+                "accessTokenUrl": "'https://api.gmelius.com/public/v2/token'",
+                "scope": "'offline_access;https://api.gmelius.com/public/auth/sequences/enroll;https://api.gmelius.com/public/auth/conversations/read;https://api.gmelius.com/public/auth/conversations/metadata;https://api.gmelius.com/public/auth/conversations/insert;https://api.gmelius.com/public/auth/boards/read;https://api.gmelius.com/public/auth/boards/modify'",
+                "grantType": "'authorization_code'",
+                "accessToken": "@config.accessToken",
+                "refreshToken": "@config.refreshToken"
+            }
+        },
+        {
+            "name": "codeVerifier",
+            "label": "Code Verifier",
+            "type": "password",
+            "required": true
+        },
+        {
+            "name": "codeChallenge",
+            "label": "Code Challenge",
+            "type": "password",
+            "required": true
+        },
+        {
+            "name": "accessToken",
+            "label": "Access token",
+            "type": "text",
+            "visibility": true
+        },
+        {
+            "name": "webhook",
+            "label": "Webhook URL",
+            "type": "label",
+            "value": "@config.WEBHOOK_URL"
+        },
+        {
+            "name": "GMELIUS_API_BASE_URL",
+            "label": "Gmelius Api Url",
+            "type": "label",
+            "value": "https://api.gmelius.com/public/v2/"
+        }
+    ],
+    "events": [
+        {
+            "label": "Webhook",
+            "name": "webhook",
+            "description": "Notifications from Gmelius about entities"
+        }
+    ],
+    "metadata": [
+        {
+            "type": "script",
+            "namespace": "api",
+            "path": "/scripts/functions.js"
+        },
+        {
+            "type": "flowStep",
+            "namespace": "steps",
+            "path": "/flowSteps/apiCallGmelius"
+        },
+        {
+            "type": "flowStep",
+            "namespace": "steps",
+            "path": "/flowSteps/enrollUserInSequenceGmelius"
+        }
+    ]
+}

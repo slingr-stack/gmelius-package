@@ -1,0 +1,44 @@
+{
+  "label": "Enroll user in sequence to gmelius",
+  "name": "enrollUserInSequenceGmelius",
+  "category": "integrations",
+  "description": "Enroll user in sequence",
+  "inputs": [
+    {
+      "label": "Sequence Id",
+      "name": "sequenceId",
+      "type": "text",
+      "required": true,
+      "options": {
+        "allowContextSelector": "true"
+      }
+    },
+    {
+      "label": "Contact Email",
+      "name": "contactEmail",
+      "type": "text",
+      "required": true,
+      "options": {
+        "validation": "email",
+        "allowContextSelector": "true"
+      }
+    },
+    {
+      "label": "Contact First Name",
+      "name": "contactFirstName",
+      "type": "text",
+      "required": true,
+      "options": {
+        "allowContextSelector": "true"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "label": "Response",
+      "name": "response",
+      "type": "object",
+      "description": "The response to external URL"
+    }
+  ]
+}

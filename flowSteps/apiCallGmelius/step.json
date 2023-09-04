@@ -1,0 +1,262 @@
+{
+  "label": "API call to gmelius",
+  "name": "apiCallGmelius",
+  "category": "integrations",
+  "description": "This flow step will send generic request to gmelius",
+  "inputs": [
+    {
+      "label": "Url",
+      "name": "url",
+      "description": "The method and path to which this endpoint is to send requests in a generic way.",
+      "type": "urlParams",
+      "required": "true",
+      "options": {
+        "type": "dropDown",
+        "possibleValues": [
+            {
+              "label": "POST /token/introspection"
+            },
+            {
+              "label": "POST /token/revocation"
+            },
+            {
+              "label": "POST /auth/boards"
+            },
+            {
+              "label": "POST /auth/boards/{id}/columns"
+            },
+            {
+              "label": "POST /auth/boards/cards"
+            },
+            {
+              "label": "POST /auth/boards/cards/{id}/tags"
+            },
+            {
+              "label": "POST /auth/conversations/{id}/notes"
+            },
+            {
+              "label": "POST /auth/conversations/{id}/reply"
+            },
+            {
+              "label": "POST /auth/conversations/{id}/tags"
+            },
+            {
+              "label": "POST /auth/sequences/enroll/{id}"
+            },
+            {
+              "label": "POST /auth/notes"
+            },
+            {
+              "label": "POST /auth/webhooks"
+            },
+            {
+              "label": "GET /me"
+            },
+            {
+              "label": "GET /auth/boards"
+            },
+            {
+              "label": "GET /auth/boards/{id}"
+            },
+            {
+              "label": "GET /auth/boards/{id}/columns"
+            },
+            {
+              "label": "GET /auth/boards/columns/{id}"
+            },
+            {
+              "label": "GET /auth/boards/{id}/cards"
+            },
+            {
+              "label": "GET /auth/boards/cards/{id}"
+            },
+            {
+              "label": "GET /auth/sharedfolders"
+            },
+            {
+              "label": "GET /auth/sharedfolders/{id}"
+            },
+            {
+              "label": "GET /auth/sharedfolders/{id}/conversations"
+            },
+            {
+              "label": "GET /auth/conversations/{id}"
+            },
+            {
+              "label": "GET /auth/sequences"
+            },
+            {
+              "label": "GET /auth/sequences/{id}"
+            },
+            {
+              "label": "GET /auth/webhooks"
+            },
+            {
+              "label": "GET /auth/webhooks/{id}"
+            },
+            {
+              "label": "GET /auth/events"
+            },
+            {
+              "label": "PUT /auth/boards/{id}"
+            },
+            {
+              "label": "PUT /auth/conversations/{id}/assignee"
+            },
+            {
+              "label": "PUT /auth/conversations/{id}/status"
+            },
+            {
+              "label": "PUT /auth/notes/{id}"
+            },
+            {
+              "label": "DELETE /auth/boards/{id}"
+            },
+            {
+              "label": "DELETE /auth/boards/columns/{id}"
+            },
+            {
+              "label": "DELETE /auth/boards/cards/{id}"
+            },
+            {
+              "label": "DELETE /auth/boards/cards/{id}/tags/{tagId}"
+            },
+            {
+              "label": "DELETE /auth/sequences/disenroll/{id}"
+            },
+            {
+              "label": "DELETE /auth/notes/{id}"
+            },
+            {
+              "label": "DELETE /auth/webhooks/{id}"
+            },
+            {
+              "label": "PATCH /auth/boards/columns/{id}"
+            },
+            {
+              "label": "PATCH /auth/boards/cards/{id}"
+            },
+            {
+              "label": "PATCH /auth/tags/{id}"
+            }
+        ]
+      }
+    },
+    {
+      "label": "Headers",
+      "name": "headers",
+      "description": "Let the client and the server pass additional information with the HTTP request in a key value format. (e.g. key=ABC123)",
+      "type": "keyValue"
+    },
+    {
+      "label": "Query Params",
+      "name": "params",
+      "description": "Parameters attached to the end of a url in a key value format. (e.g. key=ABC123)",
+      "type": "keyValue"
+    },
+    {
+      "label": "Body",
+      "name": "body",
+      "type": "json",
+      "description": "Content to be sent to the server.",
+      "options": {
+        "allowContextSelector": "true"
+      }
+    },
+    {
+      "label": "Override Settings",
+      "name": "overrideSettings",
+      "type": "boolean",
+      "description": "If true, allows adding configurations",
+      "defaultValue": false,
+      "options": {
+        "allowContextSelector": "false"
+      }
+    },
+    {
+      "label": "Follow Redirects",
+      "name": "followRedirects",
+      "type": "boolean",
+      "description": "Follow the redirects when a HTTP request is executed",
+      "visibility": "config.overrideSettings",
+      "defaultValue": false,
+      "options": {
+        "allowContextSelector": "false"
+      }
+    },
+    {
+      "label": "Download",
+      "name": "download",
+      "type": "boolean",
+      "description": "Indicates that the resource has to be downloaded into a file instead of returning it in the response.",
+      "visibility": "config.overrideSettings && config.events != \"fileDownloaded\"",
+      "defaultValue": false,
+      "options": {
+        "allowContextSelector": "false"
+      }
+    },
+    {
+      "label": "File Name",
+      "name": "fileName",
+      "description": "If provided, the file will be stored with this name. If empty the file name will be calculated from the URL.",
+      "visibility": "(config.overrideSettings && config.download) || config.events === \"fileDownloaded\"",
+      "type": "text",
+      "options": {
+        "allowContextSelector": "true"
+      }
+    },
+    {
+      "label": "Full Response",
+      "name": "fullResponse",
+      "type": "boolean",
+      "description": "Include extended information about response",
+      "visibility": "config.overrideSettings",
+      "defaultValue": false,
+      "options": {
+        "allowContextSelector": "false"
+      }
+    },
+    {
+      "label": "Connection timeout",
+      "name": "connectionTimeout",
+      "description": "Connect timeout interval, in milliseconds (0 = infinity). Default value: 5000 ms (5 sec)",
+      "visibility": "config.overrideSettings",
+      "type": "text",
+      "defaultValue": "5000",
+      "typeOptions": {
+        "validation": {
+          "function": "!config.connectionTimeout || utils.isPlaceholder(config.connectionTimeout) || utils.getInteger(config.connectionTimeout) >= 0",
+          "message": "The time must be a valid placeholder or a positive integer greater than or equal to 0. "
+        }
+      },
+      "options": {
+        "allowContextSelector": "false"
+      }
+    },
+    {
+      "label": "Read timeout",
+      "name": "readTimeout",
+      "description": "Read timeout interval, in milliseconds (0 = infinity). Default value: 60000 ms (60 sec)",
+      "visibility": "config.overrideSettings",
+      "type": "text",
+      "defaultValue": "60000",
+      "typeOptions": {
+        "validation": {
+          "function": "!config.readTimeout || utils.isPlaceholder(config.readTimeout) || utils.getInteger(config.readTimeout) >= 0",
+          "message": "The time must be a valid placeholder or a positive integer greater than or equal to 0. "
+        }
+      },
+      "options": {
+        "allowContextSelector": "false"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "label": "Response",
+      "name": "response",
+      "type": "object",
+      "description": "The response to external URL"
+    }
+  ]
+}
