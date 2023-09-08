@@ -21,22 +21,30 @@
             "name": "clientId",
             "label": "Client ID",
             "type": "text",
-            "required": true
+            "required": "true"
         },
         {
             "name": "clientSecret",
             "label": "Client Secret",
             "type": "text",
-            "required": true
+            "required": "true"
+        },
+        {
+            "name": "codeVerifier",
+            "label": "Code Verifier",
+            "type": "text",
+            "required": "true"
         },
         {
             "name": "requestToken",
             "label": "Request token",
             "type": "oauth2",
-            "visibility": true,
+            "visibility": "true",
             "typeOptions": {
                 "clientId": "config.clientId",
                 "clientSecret": "config.clientSecret",
+                "codeVerifier": "config.codeVerifier",
+                "redirectUri": "config.redirectUri",
                 "authUrl": "'https://gmelius.io/oauth/authorize'",
                 "accessTokenUrl": "'https://api.gmelius.com/public/v2/token'",
                 "scope": "'offline_access;https://api.gmelius.com/public/auth/sequences/enroll;https://api.gmelius.com/public/auth/conversations/read;https://api.gmelius.com/public/auth/conversations/metadata;https://api.gmelius.com/public/auth/conversations/insert;https://api.gmelius.com/public/auth/boards/read;https://api.gmelius.com/public/auth/boards/modify'",
@@ -46,22 +54,16 @@
             }
         },
         {
-            "name": "codeVerifier",
-            "label": "Code Verifier",
-            "type": "password",
-            "required": true
-        },
-        {
-            "name": "codeChallenge",
-            "label": "Code Challenge",
-            "type": "password",
-            "required": true
-        },
-        {
             "name": "accessToken",
             "label": "Access token",
-            "type": "text",
-            "visibility": true
+            "type": "label",
+            "visibility": "true"
+        },
+        {
+            "name": "refreshToken",
+            "label": "Refresh token",
+            "type": "label",
+            "visibility": "false"
         },
         {
             "name": "webhook",

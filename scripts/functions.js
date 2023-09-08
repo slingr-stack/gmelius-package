@@ -20,6 +20,8 @@ function handleRequestWithRetry(requestFn, options, callbackData, callbacks) {
         return requestFn(options, callbackData, callbacks);
     } catch (error) {
         sys.logs.info("[gmelius] Handling request "+JSON.stringify(error));
+        refreshToken();
+        return requestFn(setAuthorization(options), callbackData, callbacks);
     }
 }
 
@@ -32,6 +34,17 @@ function createWrapperFunction(requestFn) {
 for (var key in httpDependency) {
     if (typeof httpDependency[key] === 'function') httpService[key] = createWrapperFunction(httpDependency[key]);
 }
+
+function refreshToken() {
+    var url = parse('/token');
+    sys.logs.debug('[gmelius] POST from: ' + url);
+    httpOptions = mergeJSON({}, {"Content-Type": "application/x-www-form-urlencoded"});
+    httpOptions = mergeJSON({}, {"grant_type" :"refresh_token", "refresh_token": config.get("refreshToken")});
+    var options = checkHttpOptions(url, httpOptions);
+    var response = httpService.post(Gmelius(options))
+    config.set("accessToken",response.access_token);
+}
+
 
 /****************************************************
  Helpers
@@ -704,7 +717,7 @@ var Gmelius = function (options) {
  ****************************************************/
 
 function setApiUri(options) {
-    var API_URL = config.get("GMELIUS_API_BASE_URL"); // TODO: Set the base url for the api in the package.json (Remove this comment after set the url)
+    var API_URL = config.get("GMELIUS_API_BASE_URL");
     var url = options.path || "";
     options.url = API_URL + url;
     sys.logs.debug('[gmelius] Set url: ' + options.path + "->" + options.url);
@@ -713,13 +726,21 @@ function setApiUri(options) {
 
 function setRequestHeaders(options) {
     var headers = options.headers || {};
-    if (config.get("authenticationMethod") === "apiKey") { // TODO: Set the authentication method, if needed or remove this if (Remove comments after set the url)
-        sys.logs.debug('[gmelius] Set header apikey');
-        headers = mergeJSON(headers, {"Authorization": "API-Key " + config.get("apiKey")});
-    } 
     headers = mergeJSON(headers, {"Content-Type": "application/json"});
 
     options.headers = headers;
+    return options;
+}
+
+function setAuthorization(options) {
+    var authorization = options.authorization || {};
+    sys.logs.debug('[Gmelius] setting authorization');
+    authorization = mergeJSON(authorization, {
+        type: "oauth2",
+        accessToken: config.get("accessToken"),
+        headerPrefix: "Bearer"
+    });
+    options.authorization = authorization;
     return options;
 }
 
