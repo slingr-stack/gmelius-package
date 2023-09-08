@@ -75,7 +75,7 @@
             "name": "GMELIUS_API_BASE_URL",
             "label": "Gmelius Api Url",
             "type": "label",
-            "value": "https://api.gmelius.com/public/v2/"
+            "value": "https://api.gmelius.com/public/v2"
         }
     ],
     "events": [

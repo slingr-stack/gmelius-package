@@ -36,13 +36,34 @@ for (var key in httpDependency) {
 }
 
 function refreshToken() {
-    var url = parse('/token');
-    sys.logs.debug('[gmelius] POST from: ' + url);
-    httpOptions = mergeJSON({}, {"Content-Type": "application/x-www-form-urlencoded"});
-    httpOptions = mergeJSON({}, {"grant_type" :"refresh_token", "refresh_token": config.get("refreshToken")});
-    var options = checkHttpOptions(url, httpOptions);
-    var response = httpService.post(Gmelius(options))
-    config.set("accessToken",response.access_token);
+    try {
+        sys.logs.info("[gmelius] Refresh Token request");
+        var refreshTokenResponse = httpReference.post({
+            url: "https://api.gmelius.com/public/v2/token",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            authorization : {
+                type: "basic",
+                username: config.get("clientId"),
+                password: config.get("clientSecret")
+            },
+            body: {
+                grant_type: "refresh_token",
+                refresh_token: config.get("refreshToken")
+            }
+        });
+        sys.logs.info("[gmelius] Refresh Token request response: "+JSON.stringify(refreshTokenResponse));
+        if (response && response.access_token) {
+            config.set("accessToken", refreshTokenResponse.access_token);
+            config.set("refreshToken", refreshTokenResponse.refresh_token);
+        } else {
+            sys.logs.error("[gmelius] Refresh Token request failed, no access token received.");
+        }
+    } catch (error) {
+        sys.logs.error("[gmelius] Error refreshing token: " + error.message);
+    }
 }
 
 
@@ -709,6 +730,7 @@ var Gmelius = function (options) {
     options = options || {};
     options= setApiUri(options);
     options= setRequestHeaders(options);
+    options= setAuthorization(options);
     return options;
 }
 
