@@ -88,17 +88,17 @@
     "metadata": [
         {
             "type": "script",
-            "namespace": "api",
+            "namespace": "functions",
             "path": "/scripts/functions.js"
         },
         {
             "type": "flowStep",
-            "namespace": "steps",
+            "namespace": "apiCallGmelius",
             "path": "/flowSteps/apiCallGmelius"
         },
         {
             "type": "flowStep",
-            "namespace": "steps",
+            "namespace": "enrollUserInSequenceGmelius",
             "path": "/flowSteps/enrollUserInSequenceGmelius"
         }
     ]
