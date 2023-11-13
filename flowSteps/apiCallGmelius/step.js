@@ -2,7 +2,7 @@
  Dependencies
  ****************************************************/
 
-let httpService = dependencies.http;
+var httpService = dependencies.http;
 
 /**
  * This flow step will send generic request.
@@ -22,7 +22,7 @@ let httpService = dependencies.http;
  */
 step.apiCallGmelius = function (inputs) {
 
-	let inputsLogic = {
+	var inputsLogic = {
 		headers: inputs.headers || [],
 		params: inputs.params || [],
 		body: inputs.body || {},
@@ -32,12 +32,15 @@ step.apiCallGmelius = function (inputs) {
 		fullResponse: inputs.fullResponse || false,
 		connectionTimeout: inputs.connectionTimeout || 5000,
 		readTimeout: inputs.readTimeout || 60000,
-		path: inputs.path || "",
+		path: inputs.path || {
+			urlValue: "",
+			paramsValue: []
+		},
 		method: inputs.method || "get"
 	};
 
-	let options = {
-		path: inputsLogic.path,
+	var options = {
+		path: parse(inputsLogic.path.urlValue, inputsLogic.path.paramsValue),
 		params: isObject(inputsLogic.params) ? inputsLogic.params : stringToObject(inputsLogic.params),
 		headers: isObject(inputsLogic.headers) ? inputsLogic.headers : stringToObject(inputsLogic.headers),
 		body: isObject(inputsLogic.body) ? inputsLogic.body : JSON.parse(inputsLogic.body),
@@ -75,17 +78,32 @@ step.apiCallGmelius = function (inputs) {
 	return null;
 };
 
+function parse (url, pathVariables){
+	var regex = /{([^}]*)}/g;
+	if (!url.match(regex)){
+		return url;
+	}
+	if(!pathVariables){
+		sys.logs.error('No path variables have been received and the url contains curly brackets\'{}\'');
+		throw new Error('Error please contact support.');
+	}
+	url = url.replace(regex, function(m, i) {
+		return pathVariables[i] ? pathVariables[i] : m;
+	})
+	return url;
+}
+
 function isObject (obj) {
 	return !!obj && stringType(obj) === '[object Object]'
 }
 
-let stringType = Function.prototype.call.bind(Object.prototype.toString);
+var stringType = Function.prototype.call.bind(Object.prototype.toString);
 
 function stringToObject (obj) {
 	if (!!obj){
-		let keyValue = obj.toString().split(',');
-		let parseObj = {};
-		for(let i = 0; i < keyValue.length; i++) {
+		var keyValue = obj.toString().split(',');
+		var parseObj = {};
+		for(var i = 0; i < keyValue.length; i++) {
 			parseObj[keyValue[i].split('=')[0]] = keyValue[i].split('=')[1]
 		}
 		return parseObj;
@@ -94,15 +112,15 @@ function stringToObject (obj) {
 }
 
 function setApiUri(options) {
-	let API_URL = config.get("GMELIUS_API_BASE_URL");
-	let url = options.path || "";
+	var API_URL = config.get("GMELIUS_API_BASE_URL");
+	var url = options.path || "";
 	options.url = API_URL + url;
 	sys.logs.debug('[gmelius] Set url: ' + options.path + "->" + options.url);
 	return options;
 }
 
 function setRequestHeaders(options) {
-	let headers = options.headers || {};
+	var headers = options.headers || {};
 	headers = mergeJSON(headers, {"Content-Type": "application/json"});
 
 	options.headers = headers;
@@ -110,7 +128,7 @@ function setRequestHeaders(options) {
 }
 
 function setAuthorization(options) {
-	let authorization = options.authorization || {};
+	var authorization = options.authorization || {};
 	sys.logs.debug('[Gmelius] setting authorization');
 	authorization = mergeJSON(authorization, {
 		type: "oauth2",
@@ -124,7 +142,7 @@ function setAuthorization(options) {
 function refreshToken() {
 	try {
 		sys.logs.info("[gmelius] Refresh Token request");
-		let refreshTokenResponse = httpService.post({
+		var refreshTokenResponse = httpService.post({
 			url: "https://api.gmelius.com/public/v2/token",
 			headers: {
 				"Accept": "application/json",
@@ -153,8 +171,8 @@ function refreshToken() {
 }
 
 function mergeJSON (json1, json2) {
-	const result = {};
-	let key;
+	var result = {};
+	var key;
 	for (key in json1) {
 		if(json1.hasOwnProperty(key)) result[key] = json1[key];
 	}

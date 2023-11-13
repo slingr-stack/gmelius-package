@@ -2,7 +2,7 @@
  Dependencies
  ****************************************************/
 
-let httpService = dependencies.http;
+var httpService = dependencies.http;
 
 /**
  * This flow step will send generic request.
@@ -11,13 +11,13 @@ let httpService = dependencies.http;
  */
 step.enrollUserInSequenceGmelius = function (inputs) {
 
-    let inputsLogic = {
+    var inputsLogic = {
         sequenceId: inputs.contactFirstName || "",
         contactEmail: inputs.contactEmail || "",
         contactFirstName: inputs.contactFirstName || ""
     };
 
-    let body = {
+    var body = {
         "email_address": inputsLogic.contactEmail,
         "variables": [
             {
@@ -27,7 +27,7 @@ step.enrollUserInSequenceGmelius = function (inputs) {
         ]
     };
 
-    let options = {
+    var options = {
         path: '/auth/sequences/enroll/' + inputsLogic.sequenceId,
         body: body
     };
@@ -43,15 +43,15 @@ step.enrollUserInSequenceGmelius = function (inputs) {
 
 
 function setApiUri(options) {
-    let API_URL = config.get("GMELIUS_API_BASE_URL");
-    let url = options.path || "";
+    var API_URL = config.get("GMELIUS_API_BASE_URL");
+    var url = options.path || "";
     options.url = API_URL + url;
     sys.logs.debug('[gmelius] Set url: ' + options.path + "->" + options.url);
     return options;
 }
 
 function setRequestHeaders(options) {
-    let headers = options.headers || {};
+    var headers = options.headers || {};
     headers = mergeJSON(headers, {"Content-Type": "application/json"});
 
     options.headers = headers;
@@ -59,7 +59,7 @@ function setRequestHeaders(options) {
 }
 
 function setAuthorization(options) {
-    let authorization = options.authorization || {};
+    var authorization = options.authorization || {};
     sys.logs.debug('[Gmelius] setting authorization');
     authorization = mergeJSON(authorization, {
         type: "oauth2",
@@ -73,7 +73,7 @@ function setAuthorization(options) {
 function refreshToken() {
     try {
         sys.logs.info("[gmelius] Refresh Token request");
-        let refreshTokenResponse = httpService.post({
+        var refreshTokenResponse = httpService.post({
             url: "https://api.gmelius.com/public/v2/token",
             headers: {
                 "Accept": "application/json",
@@ -102,8 +102,8 @@ function refreshToken() {
 }
 
 function mergeJSON (json1, json2) {
-    const result = {};
-    let key;
+    var result = {};
+    var key;
     for (key in json1) {
         if(json1.hasOwnProperty(key)) result[key] = json1[key];
     }

@@ -9,43 +9,48 @@
 			"name": "method",
 			"description": "The method to which this service will send the request.",
 			"type": "dropDown",
+			"multiplicity": "one",
 			"required": "true",
-			"possibleValues": [
-				{
-					"label": "GET",
-					"name": "get"
-				},
-				{
-					"label": "POST",
-					"name": "post"
-				},
-				{
-					"label": "PUT",
-					"name": "put"
-				},
-				{
-					"label": "DELETE",
-					"name": "delete"
-				},
-				{
-					"label": "PATCH",
-					"name": "patch"
-				},
-				{
-					"label": "OPTIONS",
-					"name": "options"
-				},
-				{
-					"label": "HEAD",
-					"name": "head"
-				}
-			]
+			"defaultValue": "get",
+			"options": {
+				"possibleValues": [
+					{
+						"label": "GET",
+						"name": "get"
+					},
+					{
+						"label": "POST",
+						"name": "post"
+					},
+					{
+						"label": "PUT",
+						"name": "put"
+					},
+					{
+						"label": "DELETE",
+						"name": "delete"
+					},
+					{
+						"label": "PATCH",
+						"name": "patch"
+					},
+					{
+						"label": "OPTIONS",
+						"name": "options"
+					},
+					{
+						"label": "HEAD",
+						"name": "head"
+					}
+				],
+				"allowContextSelector": "false"
+			}
 		},
 		{
 			"label": "Path",
 			"name": "path",
 			"description": "The URL to which this service will send the request.",
-			"type": "text",
+			"type": "urlParams",
 			"required": "true"
 		},
 		{
