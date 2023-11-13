@@ -1,4 +1,4 @@
-<table>
+<table class="table" style="margin-top: 10px">
     <thead>
     <tr>
         <th>Title</th>
@@ -9,7 +9,7 @@
     <tbody>
     <tr>
         <td>Gmelius package</td>
-        <td>September 1, 2023</td>
+        <td>November 13, 2023</td>
         <td>Detailed description of the API of the Gmelius package.</td>
     </tr>
     </tbody>
@@ -17,8 +17,8 @@
 
 # Overview
 
-This endpoint allows direct access to the [Gmelius API](https://developers.gmelius.com/),
-however it provides shortcuts and helpers for most common use cases.
+This endpoint allows direct access to the [Gmelius API.](https://developers.gmelius.com/)
+However, it provides shortcuts and helpers for most common use cases.
 
 Some features available in this endpoint are:
 
@@ -28,7 +28,10 @@ Some features available in this endpoint are:
 
 ## Configuration
 
-In order to use the Gmelius you must create an app in the gemlius dashboard. There you need to put the redirect URI that will be shown in the endpoint configuration. Then, you will need to go through an Oauth Authroization process with the button "Connect to Gmelius". This will give the app an authorization code is necessary to get the authorization token.
+To use the Gmelius, you must create an app in the gmelius dashboard.
+There you need to put the redirect URI that will be shown in the endpoint configuration.
+Then, you will need to go through an Oauth Authorization process with the button "Connect to Gmelius."
+This will give the app an authorization code is necessary to get the authorization token.
 
 ### Client ID
 
@@ -37,7 +40,6 @@ This value comes from the app created in the Gmelius dashboard.
 ### Client secret
 
 This value comes from the app created in the Gmelius dashboard.
-
 
 ### Code Verifier
 
@@ -65,583 +67,23 @@ This button will trigger the Oauth connection process and fill in fields mention
 
 # Javascript API
 
-The Javascript API of the gmelius package has three pieces:
+The Javascript API of the gmelius package has two pieces:
 
-- **HTTP requests**: These allows to make regular HTTP requests.
-- **Shortcuts**: These are helpers to make HTTP request to the API in a more convenient way.
-- **Additional Helpers**: These helpers provide additional features that facilitate or improves the package usage in SLINGR.
+- **HTTP requests**
+- **Flow steps**
 
 ## HTTP requests
 You can make `POST`,`GET`,`PUT`,`DELETE`,`PATCH` requests to the [gmelius API](https://developers.gmelius.com/#gmelius-api-documentation) like this:
 ```javascript
-var response = pkg.gmelius.functions.post('/auth/conversations/:id/reply', body)
-var response = pkg.gmelius.functions.get('/auth/sharedfolders')
-var response = pkg.gmelius.functions.put('/auth/conversations/:id/assignee', body)
-var response = pkg.gmelius.functions.delete('/auth/boards/:id')
-var response = pkg.gmelius.functions.patch('/auth/tags/:id', body)
+var response = pkg.gmelius.api.post('/auth/conversations/:id/reply', body)
+var response = pkg.gmelius.api.get('/auth/sharedfolders')
+var response = pkg.gmelius.api.put('/auth/conversations/:id/assignee', body)
+var response = pkg.gmelius.api.delete('/auth/boards/:id')
+var response = pkg.gmelius.api.patch('/auth/tags/:id', body)
 ```
 
 Please take a look at the documentation of the [HTTP service](https://github.com/slingr-stack/http-service)
 for more information about generic requests.
-
-## Shortcuts
-
-Instead of having to use the generic HTTP methods, you can (and should) make use of the helpers provided in the package:
-<details>
-    <summary>Click here to see all the helpers</summary>
-
-<br>
-
-* API URL: '/token/introspection'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.token.introspection(body)
-```
----
-* API URL: '/token/revocation'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.token.revocation(body)
-```
----
-* API URL: '/auth/boards'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.boards.post(body)
-```
----
-* API URL: '/auth/boards/:id/columns'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.boards.columns.post(id, body)
-```
----
-* API URL: '/auth/boards/cards'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.boards.cards.post(body)
-```
----
-* API URL: '/auth/boards/cards/:id/tags'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.boards.cards.tags.post(id, body)
-```
----
-* API URL: '/auth/conversations/:id/notes'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.conversations.notes.post(id, body)
-```
----
-* API URL: '/auth/conversations/:id/reply'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.conversations.reply.post(id, body)
-```
----
-* API URL: '/auth/conversations/:id/tags'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.conversations.tags.post(id, body)
-```
----
-* API URL: '/auth/sequences/enroll/:id'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.sequences.enroll.post(id, body)
-```
----
-* API URL: '/auth/notes'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.notes.post(body)
-```
----
-* API URL: '/auth/webhooks'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.webhooks.post(body)
-```
----
-* API URL: '/me'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.me()
-```
----
-* API URL: '/auth/boards'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.getAll()
-```
----
-* API URL: '/auth/boards/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.get(id)
-```
----
-* API URL: '/auth/boards/:id/columns'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.columns.get(id)
-```
----
-* API URL: '/auth/boards/columns/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.columns.get(id)
-```
----
-* API URL: '/auth/boards/:id/cards'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.cards.get(id)
-```
----
-* API URL: '/auth/boards/cards/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.cards.get(id)
-```
----
-* API URL: '/auth/sharedfolders'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.sharedfolders.getAll()
-```
----
-* API URL: '/auth/sharedfolders/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.sharedfolders.get(id)
-```
----
-* API URL: '/auth/sharedfolders/:id/conversations'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.sharedfolders.conversations.get(id)
-```
----
-* API URL: '/auth/conversations/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.conversations.get(id)
-```
----
-* API URL: '/auth/sequences'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.sequences.getAll()
-```
----
-* API URL: '/auth/sequences/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.sequences.getAll(id)
-```
----
-* API URL: '/auth/webhooks'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.webhooks.getAll()
-```
----
-* API URL: '/auth/events'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.events.get()
-```
----
-* API URL: '/auth/webhooks/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.webhooks.get(id)
-```
----
-* API URL: '/auth/boards/:id'
-* HTTP Method: 'PUT'
-```javascript
-pkg.gmelius.functions.boards.put(id, body)
-```
----
-* API URL: '/auth/conversations/:id/assignee'
-* HTTP Method: 'PUT'
-```javascript
-pkg.gmelius.functions.conversations.assignee.put(id, body)
-```
----
-* API URL: '/auth/conversations/:id/status'
-* HTTP Method: 'PUT'
-```javascript
-pkg.gmelius.functions.conversations.status.put(id, body)
-```
----
-* API URL: '/auth/notes/:id'
-* HTTP Method: 'PUT'
-```javascript
-pkg.gmelius.functions.notes.put(id, body)
-```
----
-* API URL: '/auth/boards/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.boards.delete(id)
-```
----
-* API URL: '/auth/boards/columns/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.boards.columns.delete(id)
-```
----
-* API URL: '/auth/boards/cards/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.boards.cards.delete(id)
-```
----
-* API URL: '/auth/boards/cards/:id/tags/:tagId'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.boards.cards.tags.delete(id, tagId)
-```
----
-* API URL: '/auth/sequences/disenroll/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.sequences.disenroll.delete(id)
-```
----
-* API URL: '/auth/notes/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.notes.delete(id)
-```
----
-* API URL: '/auth/webhooks/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.webhooks.delete(id)
-```
----
-* API URL: '/auth/boards/columns/:id'
-* HTTP Method: 'PATCH'
-```javascript
-pkg.gmelius.functions.boards.columns.patch(id, body)
-```
----
-* API URL: '/auth/boards/cards/:id'
-* HTTP Method: 'PATCH'
-```javascript
-pkg.gmelius.functions.boards.cards.patch(id, body)
-```
----
-* API URL: '/auth/tags/:id'
-* HTTP Method: 'PATCH'
-```javascript
-pkg.gmelius.functions.tags.patch(id, body)
-```
----
-
-</details>
-
-
-## Events
-
-You can set a webhooks listener with the Gmelius API methods.
-
-{% include links.html %}
-
-# New Version
-
-# Javascript API
-
-The Javascript API of the gmelius package has three pieces:
-
-- **HTTP requests**: These allow making regular HTTP requests.
-- **Shortcuts**: These are helpers to make HTTP request to the API in a more convenient way.
-- **Additional Helpers**: These helpers provide additional features that facilitate or improves the package usage in SLINGR.
-
-## HTTP requests
-You can make `POST`,`GET`,`PUT`,`DELETE`,`PATCH` requests to the [gmelius API](API_URL_HERE) like this:
-```javascript
-var response = pkg.gmelius.functions.post('/auth/sequences/enroll/:id', body)
-var response = pkg.gmelius.functions.post('/auth/sequences/enroll/:id')
-var response = pkg.gmelius.functions.get('/auth/boards/:id')
-var response = pkg.gmelius.functions.put('/auth/boards/:id', body)
-var response = pkg.gmelius.functions.put('/auth/boards/:id')
-var response = pkg.gmelius.functions.delete('/auth/boards/columns/:id')
-var response = pkg.gmelius.functions.patch('/auth/boards/cards/:id', body)
-var response = pkg.gmelius.functions.patch('/auth/boards/cards/:id')
-```
-
-Please take a look at the documentation of the [HTTP service](https://github.com/slingr-stack/http-service)
-for more information about generic requests.
-
-## Shortcuts
-
-Instead of having to use the generic HTTP methods, you can (and should) make use of the helpers provided in the package:
-<details>
-    <summary>Click here to see all the helpers</summary>
-
-<br>
-
-* API URL: '/auth/boards'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.boards.post(body)
-```
----
-* API URL: '/auth/boards'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.get()
-```
----
-* API URL: '/auth/events'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.events.get()
-```
----
-* API URL: '/auth/notes'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.notes.post(body)
-```
----
-* API URL: '/auth/sequences'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.sequences.get()
-```
----
-* API URL: '/auth/sharedfolders'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.sharedfolders.get()
-```
----
-* API URL: '/auth/webhooks'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.webhooks.post(body)
-```
----
-* API URL: '/auth/webhooks'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.webhooks.get()
-```
----
-* API URL: '/auth/boards/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.get()
-```
----
-* API URL: '/auth/boards/:id'
-* HTTP Method: 'PUT'
-```javascript
-pkg.gmelius.functions.boards.put(id, body)
-```
----
-* API URL: '/auth/boards/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.boards.delete(id)
-```
----
-* API URL: '/auth/boards/cards'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.boards.cards.post(body)
-```
----
-* API URL: '/auth/conversations/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.conversations.get(id)
-```
----
-* API URL: '/auth/notes/:id'
-* HTTP Method: 'PUT'
-```javascript
-pkg.gmelius.functions.notes.put(id, body)
-```
----
-* API URL: '/auth/notes/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.notes.delete(id)
-```
----
-* API URL: '/auth/sequences/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.sequences.get()
-```
----
-* API URL: '/auth/sharedfolders/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.sharedfolders.get()
-```
----
-* API URL: '/auth/tags/:id'
-* HTTP Method: 'PATCH'
-```javascript
-pkg.gmelius.functions.tags.patch(id, body)
-```
----
-* API URL: '/auth/webhooks/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.webhooks.get()
-```
----
-* API URL: '/auth/webhooks/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.webhooks.delete(id)
-```
----
-* API URL: '/auth/boards/:id/cards'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.cards.get()
-```
----
-* API URL: '/auth/boards/:id/columns'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.boards.columns.post(id, body)
-```
----
-* API URL: '/auth/boards/:id/columns'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.columns.get()
-```
----
-* API URL: '/auth/boards/cards/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.cards.get()
-```
----
-* API URL: '/auth/boards/cards/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.boards.cards.delete(id)
-```
----
-* API URL: '/auth/boards/cards/:id'
-* HTTP Method: 'PATCH'
-```javascript
-pkg.gmelius.functions.boards.cards.patch(id, body)
-```
----
-* API URL: '/auth/boards/columns/:id'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.boards.columns.get()
-```
----
-* API URL: '/auth/boards/columns/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.boards.columns.delete(id)
-```
----
-* API URL: '/auth/boards/columns/:id'
-* HTTP Method: 'PATCH'
-```javascript
-pkg.gmelius.functions.boards.columns.patch(id, body)
-```
----
-* API URL: '/auth/conversations/:id/assignee'
-* HTTP Method: 'PUT'
-```javascript
-pkg.gmelius.functions.conversations.assignee.put(id, body)
-```
----
-* API URL: '/auth/conversations/:id/notes'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.conversations.notes.post(id, body)
-```
----
-* API URL: '/auth/conversations/:id/reply'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.conversations.reply.post(id, body)
-```
----
-* API URL: '/auth/conversations/:id/status'
-* HTTP Method: 'PUT'
-```javascript
-pkg.gmelius.functions.conversations.status.put(id, body)
-```
----
-* API URL: '/auth/conversations/:id/tags'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.conversations.tags.post(id, body)
-```
----
-* API URL: '/auth/sequences/disenroll/:id'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.sequences.disenroll.delete(id)
-```
----
-* API URL: '/auth/sequences/enroll/:id'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.sequences.enroll.post(id, body)
-```
----
-* API URL: '/auth/sharedfolders/:id/conversations'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.sharedfolders.conversations.get(id)
-```
----
-* API URL: '/auth/boards/cards/:id/tags'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.boards.cards.tags.post(id, body)
-```
----
-* API URL: '/auth/boards/cards/:id/tags/:tagId'
-* HTTP Method: 'DELETE'
-```javascript
-pkg.gmelius.functions.boards.cards.tags.delete(id, tagId)
-```
----
-* API URL: '/me'
-* HTTP Method: 'GET'
-```javascript
-pkg.gmelius.functions.me.get()
-```
----
-* API URL: '/token/introspection'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.token.introspection.post(body)
-```
----
-* API URL: '/token/revocation'
-* HTTP Method: 'POST'
-```javascript
-pkg.gmelius.functions.token.revocation.post(body)
-```
----
-
-</details>
 
 ## Flow Step
 
@@ -650,8 +92,6 @@ As an alternative option to using scripts, you can make use of Flows and Flow St
     <summary>Click here to see the Flow Steps</summary>
 
 <br>
-
-
 
 ### Generic Flow Step
 
@@ -822,30 +262,8 @@ Generic flow step for full use of the entire package and its services.
 
 For more information about how shortcuts or flow steps work, and how they are generated, take a look at the [slingr-helpgen tool](https://github.com/slingr-stack/slingr-helpgen).
 
-## Additional Flow Step
-
-
-<details>
-    <summary>Click here to see the Customs Flow Steps</summary>
-
-<br>
-
-
-
-### Custom Flow Steps Name
-
-Description of Custom Flow Steps
-
-*MANUALLY ADD THE DOCUMENTATION OF THESE FLOW STEPS HERE...*
-
-
-</details>
-
-## Additional Helpers
-*MANUALLY ADD THE DOCUMENTATION OF THESE HELPERS HERE...*
 ## Dependencies
 * HTTP Service (Latest Version)
-
 
 # About SLINGR
 
