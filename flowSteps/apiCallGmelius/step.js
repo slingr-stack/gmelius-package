@@ -54,9 +54,9 @@ step.apiCallGmelius = function (inputs) {
 	};
 
 	refreshToken();
-	setApiUri(options)
-	setRequestHeaders(options);
-	setAuthorization(options);
+	options= setApiUri(options)
+	options= setRequestHeaders(options);
+	options= setAuthorization(options);
 
 	switch (inputsLogic.method.toLowerCase()) {
 		case 'get':

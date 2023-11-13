@@ -33,9 +33,9 @@ step.enrollUserInSequenceGmelius = function (inputs) {
     };
 
     refreshToken();
-    setApiUri(options)
-    setRequestHeaders(options);
-    setAuthorization(options);
+    options= setApiUri(options)
+    options= setRequestHeaders(options);
+    options= setAuthorization(options);
 
     return httpService.post(options);
 
